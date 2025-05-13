@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import type { PlaycademyClient } from '@playcademy/sdk'
+import { User } from '@playcademy/sdk/types'
 
 interface GameAreaProps {
     client: PlaycademyClient
@@ -14,7 +15,7 @@ export function GameArea({ client }: GameAreaProps) {
             // This results in the '.then(data => ...)' callback receiving HTML instead of expected API data.
             // For a better local development experience, implement a robust mocking strategy.
             // See: https://github.com/superbuilders/playcademy/issues/19
-            const userData = await client.users.me()
+            const userData: User = await client.users.me()
             console.log('[GameArea] User data fetched:', userData)
         }
         fetchUserData()
