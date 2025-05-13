@@ -10,13 +10,13 @@ import { StatusDisplay, type InitStatus } from './components/Status'
 import { ExitButton } from './components/Controls'
 import { GameArea } from './components/GameArea'
 
-import type { CademyClient } from '@playcademy/sdk'
+import type { PlaycademyClient } from '@playcademy/sdk'
 
 // --- Main App Component ---
 
 export function App() {
     const [initStatus, setInitStatus] = useState<InitStatus>('loading')
-    const [client, setClient] = useState<CademyClient | null>(null)
+    const [client, setClient] = useState<PlaycademyClient | null>(null)
     const [error, setError] = useState<string | null>(null)
     const [isExitedStandalone, setIsExitedStandalone] = useState(false)
 
