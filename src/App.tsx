@@ -3,14 +3,12 @@ import { useState, useEffect, useCallback } from 'react'
 import './index.css'
 import './rainbow-status.css'
 
-import { setupPlaycademy } from './playcademy'
-
 import { Header } from './components/Header'
 import { StatusDisplay, type InitStatus } from './components/Status'
 import { ExitButton } from './components/Controls'
 import { GameArea } from './components/GameArea'
 
-import type { PlaycademyClient } from '@playcademy/sdk'
+import { PlaycademyClient } from '@playcademy/sdk'
 
 // --- Main App Component ---
 
@@ -20,18 +18,18 @@ export function App() {
     const [error, setError] = useState<string | null>(null)
     const [isExitedStandalone, setIsExitedStandalone] = useState(false)
 
-    const isDevelopment = window.self === window.top
+    const isStandalone = window.self === window.top
 
     // SDK Initialization Effect
     useEffect(() => {
         console.log('[App] Initializing Playcademy SDK...')
-        setupPlaycademy()
-            .then(sdkClient => {
+        PlaycademyClient.init()
+            .then((sdkClient: PlaycademyClient) => {
                 console.log('[App] Playcademy SDK Initialized:', sdkClient)
                 setClient(sdkClient)
                 setInitStatus('success')
             })
-            .catch(err => {
+            .catch((err: unknown) => {
                 console.error('[App] Failed to initialize Playcademy SDK:', err)
                 setError(err instanceof Error ? err.message : String(err))
                 setInitStatus('error')
@@ -40,16 +38,16 @@ export function App() {
 
     // Exit Handler
     const handleExit = useCallback(() => {
-        if (client && !isDevelopment) {
+        if (client && !isStandalone) {
             console.log('[App] Attempting to exit via client.runtime.exit()...')
             client.runtime.exit()
         } else {
             console.warn(
-                '[App] Exit Game clicked in Development Mode. No actual exit occurs.',
+                '[App] Exit Game clicked in Standalone Mode. No actual exit occurs.',
             )
             setIsExitedStandalone(true)
         }
-    }, [client, isDevelopment])
+    }, [client, isStandalone])
 
     return (
         <>
@@ -58,7 +56,7 @@ export function App() {
                 status={initStatus}
                 error={error}
                 isExitedStandalone={isExitedStandalone}
-                isDevelopment={isDevelopment}
+                isStandalone={isStandalone}
             />
             <ExitButton
                 status={initStatus}

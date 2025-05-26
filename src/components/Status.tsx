@@ -4,14 +4,14 @@ export interface StatusDisplayProps {
     status: InitStatus
     error: string | null
     isExitedStandalone: boolean
-    isDevelopment: boolean
+    isStandalone: boolean
 }
 
 export function StatusDisplay({
     status,
     error,
     isExitedStandalone,
-    isDevelopment,
+    isStandalone,
 }: StatusDisplayProps) {
     const getStatusText = () => {
         if (status === 'loading') {
@@ -22,9 +22,9 @@ export function StatusDisplay({
         }
         if (status === 'success') {
             if (isExitedStandalone) {
-                return 'Exited [Development Mode]'
+                return 'Exited [Standalone Mode]'
             }
-            return `Playcademy SDK Initialized!${isDevelopment ? ' [Development Mode]' : ''}`
+            return `Playcademy SDK Initialized!${isStandalone ? ' [Standalone Mode]' : ''}`
         }
         return 'Idle' // Should not happen
     }
