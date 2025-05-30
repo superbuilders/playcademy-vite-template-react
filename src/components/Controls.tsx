@@ -7,14 +7,8 @@ interface ExitButtonProps {
     disabled: boolean
 }
 
-export function ExitButton({
-    status,
-    isExitedStandalone,
-    onClick,
-    disabled,
-}: ExitButtonProps) {
-    const isButtonDisabled =
-        status !== 'success' || isExitedStandalone || disabled
+export function ExitButton({ status, isExitedStandalone, onClick, disabled }: ExitButtonProps) {
+    const isButtonDisabled = status !== 'success' || isExitedStandalone || disabled
 
     return (
         <button onClick={onClick} disabled={isButtonDisabled}>

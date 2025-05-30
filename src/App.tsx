@@ -1,14 +1,25 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import './index.css'
 import './rainbow-status.css'
 
-import { Header } from './components/Header'
-import { StatusDisplay, type InitStatus } from './components/Status'
+import { PlaycademyClient } from '@playcademy/sdk'
+
 import { ExitButton } from './components/Controls'
 import { GameArea } from './components/GameArea'
+import { Header } from './components/Header'
+import { StatusDisplay } from './components/Status'
 
-import { PlaycademyClient } from '@playcademy/sdk'
+import type { InitStatus } from './components/Status'
+
+// Helper logger (disabled by default)
+const devLog = (..._args: unknown[]) => {
+    // Toggle to `true` while debugging this template
+    const ENABLE_LOGS = false
+    if (ENABLE_LOGS) {
+        console.log(..._args)
+    }
+}
 
 // --- Main App Component ---
 
@@ -22,15 +33,15 @@ export function App() {
 
     // SDK Initialization Effect
     useEffect(() => {
-        console.log('[App] Initializing Playcademy SDK...')
+        devLog('[App] Initializing Playcademy SDK...')
         PlaycademyClient.init()
             .then((sdkClient: PlaycademyClient) => {
-                console.log('[App] Playcademy SDK Initialized:', sdkClient)
+                devLog('[App] Playcademy SDK Initialized:', sdkClient)
                 setClient(sdkClient)
                 setInitStatus('success')
             })
             .catch((err: unknown) => {
-                console.error('[App] Failed to initialize Playcademy SDK:', err)
+                devLog('[App] Failed to initialize Playcademy SDK:', err)
                 setError(err instanceof Error ? err.message : String(err))
                 setInitStatus('error')
             })
@@ -39,12 +50,10 @@ export function App() {
     // Exit Handler
     const handleExit = useCallback(() => {
         if (client && !isStandalone) {
-            console.log('[App] Attempting to exit via client.runtime.exit()...')
+            devLog('[App] Attempting to exit via client.runtime.exit()...')
             client.runtime.exit()
         } else {
-            console.warn(
-                '[App] Exit Game clicked in Standalone Mode. No actual exit occurs.',
-            )
+            devLog('[App] Exit Game clicked in Standalone Mode. No actual exit occurs.')
             setIsExitedStandalone(true)
         }
     }, [client, isStandalone])

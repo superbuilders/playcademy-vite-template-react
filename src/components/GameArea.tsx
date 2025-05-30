@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
-import type { PlaycademyClient } from '@playcademy/sdk'
-import { User } from '@playcademy/sdk/types'
+
+import type { PlaycademyClient, User } from '@playcademy/sdk/types'
 
 interface GameAreaProps {
     client: PlaycademyClient
